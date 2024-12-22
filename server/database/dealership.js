@@ -42,14 +42,3 @@ const dealerships = new Schema({
 });
 
 module.exports = mongoose.model('dealerships', dealerships);
-// Express route to fetch dealer by a particular id
-app.get('/fetchDealer/:id', async (req, res) => {
-    //Write your code here
-    try {
-        const id = req.params.id;
-        const documents = await Dealerships.findById(id);
-        res.json(documents);
-    } catch (error) {
-        res.status(500).json({ error: 'Error fetching dealers' });
-    }
-});

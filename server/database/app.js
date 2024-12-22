@@ -69,9 +69,8 @@ try {
 
 // Express route to fetch Dealers by a particular state
 app.get('/fetchDealers/:state', async (req, res) => {
-//Write your code here
-try {
-    const documents = await Dealerships.find({dealership: req.params.state});
+  try {
+    const documents = await Dealerships.find({ state: req.params.state });
     res.json(documents);
   } catch (error) {
     res.status(500).json({ error: 'Error fetching dealers by state' });
@@ -80,11 +79,12 @@ try {
 
 // Express route to fetch dealer by a particular id
 app.get('/fetchDealer/:id', async (req, res) => {
-//Write your code here
-try {
-    const id = req.params.id;
-    const document = await Dealerships.findById(id);
-    res.json(document);
+  try {
+    const dealer = await Dealerships.findOne({ id: parseInt(req.params.id, 10) });
+    if (!dealer) {
+      return res.status(404).json({ error: 'Dealer not found' });
+    }
+    res.json(dealer);
   } catch (error) {
     res.status(500).json({ error: 'Error fetching dealer by ID' });
   }
