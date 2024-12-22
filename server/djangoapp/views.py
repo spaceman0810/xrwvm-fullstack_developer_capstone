@@ -8,19 +8,44 @@ from django.contrib.auth import logout
 from django.contrib import messages
 from datetime import datetime
 
+
 from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
 from django.contrib.auth import login, authenticate
 import logging
 import json
 from django.views.decorators.csrf import csrf_exempt
+from .models import CarMake, CarModel
 from .populate import initiate
-
+import logging
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
-
+def populate_view(request):
+    initiate()
+    return HttpResponse("Data populated successfully")
 # Create your views here.
+@require_http_methods(["GET"])
+def get_cars(request):
+    try:
+        # Populate data if no car makes exist
+        if not CarMake.objects.exists():
+            logger.info("No CarMake data found. Initiating data population.")
+            initiate()
+
+        # Fetch car models and related car makes, optimized with select_related
+        car_models = CarModel.objects.select_related('car_make')  # Avoid N+1 queries
+        cars = [{"CarModel": cm.name, "CarMake": cm.car_make.name} for cm in car_models]
+
+        # Log successful fetching
+        logger.info(f"Successfully fetched {len(cars)} car models.")
+
+        return JsonResponse({"CarModels": cars}, status=200)
+    except Exception as e:
+        # Log the exception with details
+        logger.error(f"Error in get_cars view: {e}")
+        return JsonResponse({"error": "An unexpected error occurred."}, status=500)
 
 # Create a `login_request` view to handle sign in request
 @csrf_exempt
