@@ -20,7 +20,7 @@ def initiate():
     for data in car_make_data:
         try:
             car_make_instance = CarMake.objects.create(
-                name=data['name'], description=data['description']
+                name=data["name"], description=data["description"]
             )
             car_make_instances.append(car_make_instance)
             logger.info(f"Created CarMake: {data['name']}")
@@ -140,11 +140,11 @@ def initiate():
     for data in car_model_data:
         try:
             car_model_instance = CarModel.objects.create(
-                name=data['name'],
-                car_make=data['car_make'],
-                type=data['type'],
-                year=data['year'],
-                dealer_id=data['dealer_id'],
+                name=data["name"],
+                car_make=data["car_make"],
+                type=data["type"],
+                year=data["year"],
+                dealer_id=data["dealer_id"],
             )
             logger.info(f"Created CarModel: {data['name']} - {data['car_make'].name}")
         except Exception as e:
