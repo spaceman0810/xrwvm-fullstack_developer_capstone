@@ -79,7 +79,7 @@ const Dealer = () => {
     }
     else {
         setPostReview(
-            <a href="/register" style={{ marginLeft: "10px", marginTop: "10px", color: 'blue', textDecoration: 'underline', fontSize: '14px'}}>
+            <a href="/register" style={{ marginLeft: "10px", marginTop: "10px", color: 'blue', textDecoration: 'underline', fontSize: '15px'}}>
             Register to Post a Review
           </a>
         );
