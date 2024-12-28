@@ -77,6 +77,13 @@ const Dealer = () => {
         </a>
       );
     }
+    else {
+        setPostReview(
+            <a href="/register" style={{ marginLeft: "10px", marginTop: "10px", color: 'blue', textDecoration: 'underline', fontSize: '14px'}}>
+            Register to Post a Review
+          </a>
+        );
+      }
   }, []);
   
   useEffect(() => {
@@ -89,11 +96,11 @@ return(
       <Header/>
       <div style={{marginTop:"10px"}}>
       <h1 style={{ color: "grey" }}>
-        Name - {dealer.full_name}
-        Post Review - {postReview}
+        {dealer.full_name}
+        {postReview}
       </h1>
       <h4 style={{ color: "grey" }}>
-        City - {dealer.city}, Address - {dealer.address}, Zip - {dealer.zip}, State - {dealer.state}
+        {dealer.city}, {dealer.address}, {dealer.zip}, {dealer.state}
       </h4>
       </div>
       <div className="reviews_panel">
