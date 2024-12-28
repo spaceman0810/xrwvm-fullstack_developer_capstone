@@ -47,17 +47,6 @@ def initiate():
     for data in car_model_data:
         try:
             car_model_instance = CarModel.objects.create(
-<<<<<<< HEAD
-                name=data["name"],
-                car_make=data["car_make"],
-                type=data["type"],
-                year=data["year"],
-                dealer_id=data["dealer_id"],
-            )
-            logger.info(f"Created CarModel: {data['name']} - {data['car_make'].name}")
-        except Exception as e:
-            logger.error(f"Error creating CarModel {data['name']}: {e}")
-=======
                 name=data['name'], 
                 car_make=data['car_make'], 
                 type=data['type'], 
@@ -67,4 +56,3 @@ def initiate():
             logger.info(f"Created CarModel: {data['name']} - {data['car_make'].name}")
         except Exception as e:
             logger.error(f"Error creating CarModel {data['name']}: {e}")
->>>>>>> 2f7cad8fa2739c38ec898f81fb74ec33c8e80b36
