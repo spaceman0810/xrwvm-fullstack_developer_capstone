@@ -123,33 +123,40 @@ def get_dealerships(request, state="All"):
     
     return JsonResponse({"status": 200, "dealers": dealerships})
 
-
-# Create a `get_dealer_reviews` view to render the reviews of a dealer
-# def get_dealer_reviews(request,dealer_id):
-def get_dealer_reviews(request, dealer_id):
-    if dealer_id:
-        endpoint = "/fetchReviews/dealer/" + str(dealer_id)
-        reviews = get_request(endpoint)  # Make sure get_request is implemented correctly
-        if reviews:  # Check if reviews are returned
-            for review_detail in reviews:
-                response = analyze_review_sentiments(review_detail['review'])
-                print(response)
-                review_detail['sentiment'] = response['sentiment']
-            return JsonResponse({"status": 200, "reviews": reviews})
-        else:
-            return JsonResponse({"status": 404, "message": "Reviews not found"})
-    else:
-        return JsonResponse({"status": 400, "message": "Bad Request"})
-
 # Create a `get_dealer_details` view to render the dealer details
 # def get_dealer_details(request, dealer_id):
+@require_http_methods(["GET"])
 def get_dealer_details(request, dealer_id):
     if(dealer_id):
         endpoint = "/fetchDealer/"+str(dealer_id)
         dealership = get_request(endpoint)
-        return JsonResponse({"status":200,"dealer":dealership})
-    else:
-        return JsonResponse({"status":400,"message":"Bad Request"})
+        if dealership:
+            return JsonResponse({"status":200,"dealer": dealership})
+        else:
+            return JsonResponse({"status":404,"message":"Dealer not found"})
+    return JsonResponse({"status":400,"message":"Bad Request"})
+
+# Create a `get_dealer_reviews` view to render the reviews of a dealer
+# def get_dealer_reviews(request,dealer_id):
+@require_http_methods(["GET"])
+def get_dealer_reviews(request, dealer_id):
+    if dealer_id:
+        endpoint = f"/fetchReviews/dealer/{dealer_id}"
+        reviews = get_request(endpoint)
+        if reviews:
+            for review in reviews:
+                try:
+                    sentiment_response = analyze_review_sentiments(review['review'])
+                    review['sentiment'] = sentiment_response.get('sentiment', 'neutral')
+                except Exception as e:
+                    review['sentiment'] = 'neutral'
+                    logger.error(f"Sentiment analysis failed for review: {review['review']} - {e}")
+            return JsonResponse({"status": 200, "reviews": reviews})
+        else:
+            return JsonResponse({"status": 404, "message": "Reviews not found"})
+    return JsonResponse({"status": 400, "message": "Bad Request"})
+
+
 
 # Create a `add_review` view to submit a review
 # def add_review(request):
