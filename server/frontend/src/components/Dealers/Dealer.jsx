@@ -33,15 +33,14 @@ const Dealer = () => {
       const res = await fetch(dealer_url, { method: "GET" });
       const retobj = await res.json();
       if (retobj.status === 200 && retobj.dealer) {
-        console.log("Dealer data:", retobj.dealer);  // Add logging to inspect the response
-        setDealer(retobj.dealer);  // Directly set the dealer data
+        setDealer(retobj.dealer);  // Ensure dealer data is in the expected structure
       } else {
-        console.error('Failed to fetch dealer details:', retobj);
+        console.error("Failed to fetch dealer details:", retobj);
       }
     } catch (error) {
-      console.error('Error fetching dealer data:', error);
+      console.error("Error fetching dealer data:", error);
     }
-  }
+  }  
 
   const get_reviews = async () => {
     try {
@@ -67,20 +66,35 @@ const Dealer = () => {
   useEffect(() => {
     get_dealer();
     get_reviews();
-    if(sessionStorage.getItem("username")) {
-      setPostReview(<a href={post_review}><img src={review_icon} style={{width:'10%',marginLeft:'10px',marginTop:'10px'}} alt='Post Review'/></a>)
-
-      
+    if (sessionStorage.getItem("username")) {
+      setPostReview(
+        <a href={post_review}>
+          <img
+            src={review_icon}
+            style={{ width: "10%", marginLeft: "10px", marginTop: "10px" }}
+            alt="Post Review"
+          />
+        </a>
+      );
     }
-  },[]);  
+  }, []);
+  
+  useEffect(() => {
+    console.log(dealer);  // Check if dealer data is correct
+  }, [dealer]); 
 
 
 return(
   <div style={{margin:"20px"}}>
       <Header/>
       <div style={{marginTop:"10px"}}>
-      <h1 style={{color:"grey"}}>{dealer.full_name}{postReview}</h1>
-      <h4  style={{color:"grey"}}>{dealer['city']},{dealer['address']}, Zip - {dealer['zip']}, {dealer['state']} </h4>
+      <h1 style={{ color: "grey" }}>
+        Name - {dealer.full_name}
+        Post Review - {postReview}
+      </h1>
+      <h4 style={{ color: "grey" }}>
+        City - {dealer.city}, Address - {dealer.address}, Zip - {dealer.zip}, State - {dealer.state}
+      </h4>
       </div>
       <div className="reviews_panel">
         {reviews.length === 0 && !unreviewed ? (
