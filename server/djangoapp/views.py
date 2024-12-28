@@ -156,8 +156,6 @@ def get_dealer_reviews(request, dealer_id):
             return JsonResponse({"status": 404, "message": "Reviews not found"})
     return JsonResponse({"status": 400, "message": "Bad Request"})
 
-
-
 # Create a `add_review` view to submit a review
 # def add_review(request):
 def add_review(request):
