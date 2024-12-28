@@ -4,7 +4,6 @@ import "./Dealers.css";
 import "../assets/style.css";
 import Header from '../Header/Header';
 
-
 const PostReview = () => {
   const [dealer, setDealer] = useState({});
   const [review, setReview] = useState("");
@@ -62,18 +61,21 @@ const PostReview = () => {
   }
 
   }
-  const get_dealer = async ()=>{
-    const res = await fetch(dealer_url, {
-      method: "GET"
-    });
-    const retobj = await res.json();
-    
-    if(retobj.status === 200) {
-      let dealerobjs = Array.from(retobj.dealer)
-      if(dealerobjs.length > 0)
-        setDealer(dealerobjs[0])
+
+  const get_dealer = async () => {
+    try {
+      const res = await fetch(dealer_url, { method: "GET" });
+      const retobj = await res.json();
+      if (retobj.status === 200 && retobj.dealer) {
+        setDealer(retobj.dealer);  // Ensure dealer data is in the expected structure
+      } else {
+        console.error("Failed to fetch dealer details:", retobj);
+      }
+    } catch (error) {
+      console.error("Error fetching dealer data:", error);
     }
-  }
+  }  
+
 
   const get_cars = async ()=>{
     const res = await fetch(carmodels_url, {
