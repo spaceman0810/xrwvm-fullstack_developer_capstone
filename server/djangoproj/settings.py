@@ -144,33 +144,6 @@ MEDIA_URL = '/media/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
-<<<<<<< HEAD
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "frontend/static"),
-    os.path.join(BASE_DIR, "frontend/build"),
-    os.path.join(BASE_DIR, "frontend/build/static"),
-]
-
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "handlers": {
-        "console": {
-            "level": "DEBUG",
-            "class": "logging.StreamHandler",
-        },
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": "DEBUG",
-            "propagate": True,
-        },
-    },
-}
-=======
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_DIRS = [
@@ -196,4 +169,3 @@ LOGGING = {
         },
     },
 }
->>>>>>> 2f7cad8fa2739c38ec898f81fb74ec33c8e80b36
